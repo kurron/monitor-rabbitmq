@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kurron.example.rest.inbound
 
+import org.kurron.feedback.AbstractFeedbackAware
+import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.messaging.Message
+import org.springframework.stereotype.Component
+
 /**
- * Contains custom HTTP header names.
- */
-class CustomHttpHeaders {
+ * Pulls messages of the the queue.
+ **/
+@Component
+class MessageProcessor extends AbstractFeedbackAware {
 
-    /**
-     * Private constructor, to prevent instantiation.
-     */
-    private CustomHttpHeaders() { }
-
-    /**
-     * The correlation id (a.k.a. work-unit) header, useful in stitching together work being done by the server.
-     */
-    static final String X_CORRELATION_ID = 'X-Correlation-Id'
+    @RabbitListener( queues = 'myQueue' )
+    void processMessage( Message<String> order ) {
+    }
 }

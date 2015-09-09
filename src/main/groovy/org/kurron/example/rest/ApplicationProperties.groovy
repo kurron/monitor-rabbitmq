@@ -27,9 +27,4 @@ class ApplicationProperties {
      * The exchange to publish to.
      */
     String exchange
-
-    /**
-     * Flag controlling whether or not the correlation id is required.
-     */
-    boolean requireCorrelationId
 }
