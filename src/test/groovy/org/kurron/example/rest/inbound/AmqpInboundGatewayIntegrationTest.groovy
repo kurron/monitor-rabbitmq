@@ -47,7 +47,7 @@ class AmqpInboundGatewayIntegrationTest extends Specification implements Generat
         assert theTemplate
 
         when: 'we send a bunch of messages'
-        100.times {
+        1.times {
             def message = newMessage( randomHexString() )
             theTemplate.send( message )
         }
@@ -62,7 +62,7 @@ class AmqpInboundGatewayIntegrationTest extends Specification implements Generat
                 .setMessageId( randomUUID().toString() )
                 .setDeliveryMode( MessageDeliveryMode.PERSISTENT )
                 .setTimestamp( Calendar.instance.time )
-                .setCorrelationId( randomUUID().toString().getBytes( StandardCharsets.UTF_8 ) )
+                .setCorrelationId( randomHexString().getBytes( StandardCharsets.UTF_8 ) )
                 .build()
     }
 

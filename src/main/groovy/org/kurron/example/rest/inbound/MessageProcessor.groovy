@@ -16,8 +16,10 @@
 
 package org.kurron.example.rest.inbound
 
+import static java.nio.charset.StandardCharsets.UTF_8
 import org.kurron.example.rest.feedback.ExampleFeedbackContext
 import org.kurron.feedback.AbstractFeedbackAware
+import org.slf4j.MDC
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.amqp.support.AmqpHeaders
 import org.springframework.messaging.handler.annotation.Header
@@ -31,8 +33,18 @@ import org.springframework.stereotype.Component
 @Component
 class MessageProcessor extends AbstractFeedbackAware {
 
+    /**
+     * Correlation id key into the mapped diagnostic context.
+     */
+    public static final String CORRELATION_ID = 'correlation-id'
+
     @RabbitListener( queues = '${example.queue}' )
-    void processMessage( @Payload String command, @Header( AmqpHeaders.APP_ID ) String sender  ) {
+    void processMessage( @Payload String command, @Header( AmqpHeaders.APP_ID ) String sender,  @Header( value = AmqpHeaders.CORRELATION_ID, required = false ) byte[] correlationBytes  ) {
+        String correlationID = correlationBytes ? new String( correlationBytes,UTF_8 ) : 'NOT PROVIDED'
+        MDC.put( CORRELATION_ID, correlationID )
+
         feedbackProvider.sendFeedback( ExampleFeedbackContext.DATA_PROCESSED, command, sender )
+
+        MDC.remove( CORRELATION_ID )
     }
 }
