@@ -46,11 +46,11 @@ class AmqpInboundGatewayIntegrationTest extends Specification implements Generat
         given: 'a valid environment'
         assert theTemplate
 
-        and: 'a message'
-        def message = newMessage( randomHexString() )
-
-        when: 'the answer comes back'
-        theTemplate.send( message )
+        when: 'we send a bunch of messages'
+        100.times {
+            def message = newMessage( randomHexString() )
+            theTemplate.send( message )
+        }
 
         then: 'I cannot think of anything clever to assert'
         true

@@ -16,6 +16,7 @@
 
 package org.kurron.example.rest.inbound
 
+import org.kurron.example.rest.feedback.ExampleFeedbackContext
 import org.kurron.feedback.AbstractFeedbackAware
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.messaging.Message
@@ -24,11 +25,12 @@ import org.springframework.stereotype.Component
 /**
  * Pulls messages of the the queue.
  **/
+@SuppressWarnings( 'GroovyUnusedDeclaration' )
 @Component
 class MessageProcessor extends AbstractFeedbackAware {
 
     @RabbitListener( queues = '${example.queue}' )
-    void processMessage( Message<String> order ) {
-        println( 'bob!' )
+    void processMessage( Message<String> data ) {
+        feedbackProvider.sendFeedback( ExampleFeedbackContext.DATA_PROCESSED, data.payload )
     }
 }
