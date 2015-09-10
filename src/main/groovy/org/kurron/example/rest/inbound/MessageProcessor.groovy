@@ -20,8 +20,8 @@ import org.kurron.example.rest.feedback.ExampleFeedbackContext
 import org.kurron.feedback.AbstractFeedbackAware
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.amqp.support.AmqpHeaders
-import org.springframework.messaging.Message
 import org.springframework.messaging.handler.annotation.Header
+import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 
 /**
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component
 class MessageProcessor extends AbstractFeedbackAware {
 
     @RabbitListener( queues = '${example.queue}' )
-    void processMessage( Message<String> data, @Header( AmqpHeaders.APP_ID ) String sender  ) {
-        feedbackProvider.sendFeedback( ExampleFeedbackContext.DATA_PROCESSED, data.payload, sender )
+    void processMessage( @Payload String command, @Header( AmqpHeaders.APP_ID ) String sender  ) {
+        feedbackProvider.sendFeedback( ExampleFeedbackContext.DATA_PROCESSED, command, sender )
     }
 }
