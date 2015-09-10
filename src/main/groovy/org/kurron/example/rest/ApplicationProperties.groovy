@@ -27,4 +27,9 @@ class ApplicationProperties {
      * The exchange to publish to.
      */
     String exchange
+
+    /**
+     * The queue to pull from.
+     */
+    String queue
 }

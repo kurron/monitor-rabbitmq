@@ -17,7 +17,9 @@ package org.kurron.example.rest
 
 import groovy.util.logging.Slf4j
 import org.kurron.feedback.FeedbackAwareBeanPostProcessor
+import org.springframework.amqp.core.Binding
 import org.springframework.amqp.core.DirectExchange
+import org.springframework.amqp.core.Queue
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Value
@@ -25,7 +27,6 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
-import org.springframework.web.client.AsyncRestTemplate
 
 /**
  * This is the main entry into the application. Running from the command-line using embedded Tomcat will invoke
@@ -70,11 +71,6 @@ class Application {
     }
 
     @Bean
-    AsyncRestTemplate asyncRestTemplate() {
-        new AsyncRestTemplate()
-    }
-
-    @Bean
     RabbitTemplate rabbitTemplate( ApplicationProperties configuration, ConnectionFactory factory  ) {
         def bean = new RabbitTemplate( factory )
         bean.exchange = configuration.exchange
@@ -84,5 +80,15 @@ class Application {
     @Bean
     DirectExchange exchange( ApplicationProperties configuration ) {
         new DirectExchange( configuration.exchange )
+    }
+
+    @Bean
+    Queue queue( ApplicationProperties configuration ) {
+        new Queue( configuration.queue, true, false, false )
+    }
+
+    @Bean
+    Binding binding( Queue queue, DirectExchange exchange ) {
+        new Binding(queue.name, Binding.DestinationType.QUEUE, exchange.name, '', [:] )
     }
 }

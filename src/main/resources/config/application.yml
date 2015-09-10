@@ -67,6 +67,7 @@ logging:
 
 example:
     exchange: monitoring
+    queue: monitoring
 
 #---------e Profile specific overrides ----------#
 

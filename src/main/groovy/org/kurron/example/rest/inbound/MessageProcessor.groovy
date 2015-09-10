@@ -27,7 +27,8 @@ import org.springframework.stereotype.Component
 @Component
 class MessageProcessor extends AbstractFeedbackAware {
 
-    @RabbitListener( queues = 'myQueue' )
+    @RabbitListener( queues = '${example.queue}' )
     void processMessage( Message<String> order ) {
+        println( 'bob!' )
     }
 }
