@@ -27,7 +27,7 @@
             <pattern>${MESSAGE_FORMAT}</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
+            <level>ALL</level>
         </filter>
     </appender>
 
