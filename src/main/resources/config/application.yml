@@ -68,6 +68,8 @@ logging:
 example:
     exchange: monitoring
     queue: monitoring
+    preFetchCount: 255
+    concurrentConsumers: 1
 
 #---------e Profile specific overrides ----------#
 

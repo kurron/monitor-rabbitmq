@@ -32,4 +32,14 @@ class ApplicationProperties {
      * The queue to pull from.
      */
     String queue
+
+    /**
+     * How many messages to pull from RabbitMQ each trip.
+     **/
+    int preFetchCount
+
+    /**
+     * How many consumers to spin up.
+     **/
+    int concurrentConsumers
 }

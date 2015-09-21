@@ -20,6 +20,7 @@ import org.kurron.feedback.FeedbackAwareBeanPostProcessor
 import org.springframework.amqp.core.Binding
 import org.springframework.amqp.core.DirectExchange
 import org.springframework.amqp.core.Queue
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Value
@@ -68,6 +69,16 @@ class Application {
     @Bean
     FeedbackAwareBeanPostProcessor feedbackAwareBeanPostProcessor() {
         new FeedbackAwareBeanPostProcessor( serviceCode, serviceInstance, realm )
+    }
+
+    @Bean
+    SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory( ConnectionFactory connectionFactory, ApplicationProperties configuration ) {
+        def bean = new SimpleRabbitListenerContainerFactory()
+        bean.connectionFactory = connectionFactory
+        bean.prefetchCount = configuration.preFetchCount
+        bean.concurrentConsumers = configuration.concurrentConsumers
+        bean.maxConcurrentConsumers = configuration.concurrentConsumers
+        bean
     }
 
     @Bean
