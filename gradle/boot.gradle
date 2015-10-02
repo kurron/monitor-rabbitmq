@@ -23,9 +23,6 @@ dependencyManagement {
     }
 }
 
-// Override the spring-data-releasetrain.version property
-ext['spring-data-releasetrain.version'] = "${springDataTrainVersion}"
-
 configurations {
     providedRuntime
 }
